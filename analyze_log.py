@@ -1,6 +1,6 @@
 import re
 import os
-import genLogFile
+import genLogFile #allows me to use a function near the end of analyze_log.py: generate_log_file()
 
 def analyze_log_file(filename="access.log"):
     """Analyzes a log file and extracts information.
@@ -38,29 +38,6 @@ def analyze_log_file(filename="access.log"):
     except FileNotFoundError:
         print(f"Error: Log file '{filename}' not found.")
         return
-    # set up variables to store the datetime, error count, unique IPs, and URL counts for the log file.
-
-    # a.  loop through each line in the log file.  This would be the log_lines list
-    #     if you opened the log the same way as in the instructions.  
-    # b.  inside this loop, first extract the log data using the extract_log_data
-    #     function or the regular expression given in the instructions.
-    # c.  if the data is extracted successfully, update the error count, unique IPs, and URL counts.
-    #     - if the ip is not in your unique_ips set, add it to the set.
-    #     - if the url is in your url_counts dictionary, increment the count by 1, otherise add the url to the dictionary with a count of 1.
-    #     - if the status code is greater than or equal to 400, increment the error count by 1.
-    
-
-    # d.  Print out the summary information as shown in the instructions.  It should look like this:
-    '''
-    Total Errors (4xx and 5xx): 52
-    Unique IP Addresses: 22
-    URL Access Counts:
-        /page1: 19
-        /images/logo.png: 20
-        /page2: 17
-        /page3: 28
-        /api/data: 16
-    '''
 
 
 def extract_log_data(line):
