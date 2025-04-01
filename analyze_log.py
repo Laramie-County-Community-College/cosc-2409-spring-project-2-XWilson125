@@ -11,22 +11,29 @@ def analyze_log_file(filename="access.log"):
 
     This function opens the log file, reads each line, and performs analysis based on the extracted data.
     """
-    error_count = 0 # set up variables to store the datetime, error count, unique IPs, and URL counts for the log file.
+# set up variables to store the datetime, error count, unique IPs, and URL counts for the log file.
+    error_count = 0
     unique_ip = set()
     url_counts = {}
+    count_status_codes = {}
     try:
-        with open(filename, 'r') as log_file:   #open log file
-            log_lines = log_file.readlines()    #read the lines into a list
+# Opens and extracts information from the log file
+        with open(filename, 'r') as log_file:
+            log_lines = log_file.readlines()
             for line in log_lines:
-                timestamp, ip, url, status_code = extract_log_data(line) #extract information
-                datetime = timestamp            #stores datetime
+                timestamp, ip, url, status_code = extract_log_data(line) #extract information - Note: timestamp is never used because it is never needed
                 unique_ip.add(ip)               #update unique_ip set(automatically deletes input if not unique)
                 try:                            #adds to an existing count of urls or adds a new url count
                     url_counts[url] = url_counts.get(url) + 1
                 except:
                     url_counts[url] = 1
+                try:                            #adds to an existing count of status codes or adds a new status code count
+                    count_status_codes[status_code] = count_status_codes.get(status_code) + 1
+                except:
+                    count_status_codes[status_code] = 1
                 if int(status_code) >= 400:
                     error_count += 1            #increments error count by one if there is an error.
+# Print out the summary information as shown in the instructions. Also prints how many status codes there are.
         print('Total Errors (4xx and 5xx):', error_count)
         print('Unique IP Addresses:', len(unique_ip))
         print('URL access counts:')
@@ -34,7 +41,12 @@ def analyze_log_file(filename="access.log"):
             print('   ', end=' ')
             print(section, end=': ')
             print(url_counts[section])
-    # d.  Print out the summary information as shown in the instructions.  It should look like this:
+        print('Status code counts:')
+        for section in count_status_codes:
+            print('   ', end=' ')
+            print(section, end=': ')
+            print(count_status_codes[section])
+
     except FileNotFoundError:
         print(f"Error: Log file '{filename}' not found.")
         return
